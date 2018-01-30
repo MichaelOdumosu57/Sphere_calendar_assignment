@@ -91,7 +91,7 @@ $(document).ready(function () {
     
     $(".well").css({
         "height": browser_window.outerHeight/4,
-        "width": browser_window.outerWidth/1.7,
+        "width": browser_window.outerWidth/1.9,
         "top": "30%",
         "left": "20%"
         
@@ -123,9 +123,27 @@ $(document).ready(function () {
                 return value.id.split(time_splitter)[1];
                 
             });
-    $(".well").append("<h2>Select Time Interval</h2>");
     console.log(time)
+    $(".well").append("<h2>Select Time Interval</h2>");
+    $(".well").append("<h3 start_time = 'true'>Start Time</h3>");
+    $(".well").append("<h3 end_time = 'true'>End Time</h3>");
+    $(".well").append("<h4>Day</h4>");
+    $(".well").append("<h4>Time</h4>");
     
+        //inner customization
+    {
+        $(".well > h3:has('[end_time]')").css({
+            "top":"40%",
+            "left":"50%"
+        })
+
+        $(".well > h4").css({
+            "color":"blue"
+        })        
+    }
+        //////////////////////////////////////////////////////////////
+        // to adjust inner objects in item menu
+        //////////////////////////////////////////////////////////////
 }
     //////////////////////////////////////////////////////////////
     // var day holds all the days of the week as can be seen in the x-axis calendar and in order and is lowercase according to the .checkbox attributes
