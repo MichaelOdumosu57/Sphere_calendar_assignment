@@ -1,4 +1,10 @@
-//the assignment task should be rather easy to implement as I can trigger the click function that changes the time slots
+//script now knows about the possible day and time options for the user to select boxes
+// capabilities :script creation and position of menu object
+//              :script dynamically aware of the order of the days and the times on the calendar
+
+// planned work
+//              :drop down section for the user
+//              :algorithm for checkbox selection
 
 $(document).ready(function () {
 
@@ -101,6 +107,30 @@ $(document).ready(function () {
         // browser_window.outerHeight
         // browser_window.outerWidth
     // positioned menu to be in the middle of the page
+    //////////////////////////////////////////////////////////////
+    
+
+
+    //editing  menu object
+{
+    var day = $.map($(".day > .x-axis"), function(value, index) {
+                return $(value).text().toLowerCase();
+            });
+    
+    var time_splitter =  $(".day > .x-axis").eq(1).text().toLowerCase()
+    console.log(time_splitter)
+    var time  = $.map($(".day:eq(1) > .checkbox >input"), function(value, index) {
+                return value.id.split(time_splitter)[1];
+                
+            });
+    $(".well").append("<h2>Select Time Interval</h2>");
+    console.log(time)
+    
+}
+    //////////////////////////////////////////////////////////////
+    // var day holds all the days of the week as can be seen in the x-axis calendar and in order and is lowercase according to the .checkbox attributes
+    // needed to use the map method like this becuase if the times intervals change in the calendar, my script needs to know abut this not got on convetional views of time, as expected the time will be in the last postition also to preserve order for in desktop version, the mousedrag functionality, does not go across but there is an order that it has to cover as well will make an algorithm for this
+    // time splitter used to seperate time from day, is setup also dynamic knowing about changes in the caledar
     //////////////////////////////////////////////////////////////
 
 });
