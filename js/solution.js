@@ -153,7 +153,7 @@ addFnCounter($().adv_clone);
 
 
 
-//construction of selection box
+//selection box able to receive necessary info for option time items based on determination of script
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
@@ -285,6 +285,8 @@ $(document).ready(function () {
                 
             });
     console.log(time)
+    
+    var time_info = {"Day":day,"Time":time};
     $(".well:first").append("<h2>Select Time Interval</h2>");
     $(".well:first").append("<h3>Start Time</h3>");
     $(".well:first").append("<h3>End Time</h3>");
@@ -393,7 +395,7 @@ $(document).ready(function () {
                 "left":numberParse($(".well:first").css("left"))/1.25
                 // "display":"none"
                 
-            }).wrapInner("<h2> Select " + time_version + " </h2>")
+            }).wrapInner("<h2> </h2>").hide();
             
             $(".well.selector_display >h2").css({
                 "text-align":"center"
@@ -406,7 +408,7 @@ $(document).ready(function () {
             //////////////////////////////////////////////////////////////
             // selection script for the process
             // var time_version will be used in the event blocks to give data to display in the title section of the selction ox
-
+            // needed hidden to work on event functionality
             //////////////////////////////////////////////////////////////
     }
     
@@ -423,20 +425,48 @@ $(document).ready(function () {
     // var day holds all the days of the week as can be seen in the x-axis calendar and in order and is lowercase according to the .checkbox attributes
     // needed to use the map method like this becuase if the times intervals change in the calendar, my script needs to know abut this not got on convetional views of time, as expected the time will be in the last postition also to preserve order for in desktop version, the mousedrag functionality, does not go across but there is an order that it has to cover as well will make an algorithm for this
     // time splitter used to seperate time from day, is setup also dynamic knowing about changes in the caledar
+    // var time_info is used for the event function, since javascript and jquery cannot return variables from comparison statements, requires looking in the global window element, but that itself is a big object it is better to use and object with string refreences instead
     //////////////////////////////////////////////////////////////
     
     //event function
 {
+        // helper function
+    {
+        function jsUcfirst(string)
+        {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+    }
+        //////////////////////////////////////////////////////////////
+        // this function gives proper uppercase to any string
+        //////////////////////////////////////////////////////////////
         //pulling up the selection object
     {
-        $(".well.day_selector").click(function (event){
-            console.log($(".well.time_selector"))
+        $(".well.selectors").click(function (event){
+            time_version =  jsUcfirst($(this)["0"].classList[2].split("_")[0]);
+            $(".selector_display").fadeIn(2000)
+            $(".selector_display > h2").text("Select " + time_version)
+            console.log(time_info[time_version])
+            time_info[time_version].forEach(function (time_item){
+                $(".selector_display:not(.submit)").append("<div><p>" + time_item + "</p></div>" )
+                
+                if(time_version == "Day"){
+                    $(".selector_display:not(.submit) p").css({
+                        "font-size":"4em"
+                    })
+                }
+                
+                else{
+                    $(".selector_display:not(.submit) p").css({
+                        "font-size":"1.5em"
+                    })
+                    
+                }
+            })
             
         })
         
-        $(".well.time_selector").click(function (event){
-            console.log("hit time")
-        })
+
     }
         //////////////////////////////////////////////////////////////
         // the code here controls the inital appearning of the selection object
