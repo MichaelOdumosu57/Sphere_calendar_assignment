@@ -153,12 +153,12 @@ addFnCounter($().adv_clone);
 
 
 
-//secondary step in constucting menu box
+//construction of selection box
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
 // planned work
-//              :drop down section for the user
+//              :all options appear nicely in selection box
 //              :algorithm for checkbox selection
 
 $(document).ready(function () {
@@ -185,7 +185,7 @@ $(document).ready(function () {
     var well_clone;
     $("body").append("<div class = 'well'></div>");
     $(".well").css({
-        "min-height": "20px",
+        // "min-height": "20px",
         "padding": "19px",
         "margin-bottom":" 20px",
         "background-color":" #f5f5f5",
@@ -198,9 +198,11 @@ $(document).ready(function () {
     })
     
     well_clone = $(".well").adv_clone({
-        items:"7",
-        specifiers:[["day_selector",2,3],["day_start",2],["day_end",3],["time_selector",4,5],["time_start",4],["time_end",5]]
+        items:"8",
+        specifiers:[["selectors",2,3,4,5],["day_selector",2,3],["day_start",2],["day_end",3],["time_selector",4,5],["time_start",4],["time_end",5],["selector_display",6,8],["submit",7,8]]
     });
+    
+    console.log(well_clone)
     
     $(".well:first").css({
         "position":"fixed",
@@ -310,41 +312,111 @@ $(document).ready(function () {
         $(".well > div:has( h4:contains('Day'))").css({
             "top":"-10%"
         })
+            //placement of selection buttons
+        {
+            $(".well:not(:first)").appendTo($(".well:first" ))
+            
+            $(".well.selectors").css({
+                "width":"5em",
+                "height":"20px",
+                "border-radius":"200px",
+                "position":"absolute",
+                
+            }).wrapInner("<div><h3>Select</h3><div>")
+            
+            $(".well:not(:first) > div").css({
+                "position":"absolute",
+                "top":"0%"
+            })
+            
+            $(".well.day_selector").css({
+                "top":"40%"
+            });
+            
+            $(".well.day_end").css({
+                "left":"50%"
+            });
         
+            $(".well.time_end").css({
+                "left":"50%"
+            });
+        }
+            //////////////////////////////////////////////////////////////
+            // turning rest of wells into select items with adv_clone
+            //////////////////////////////////////////////////////////////
+            
+            // placement and editing of submit button
+        {
+            $(".well.submit").css({
+                "background-color":"rgb(66, 197, 244)",
+                "width":"5em",
+                "height":"7px",
+                "border-radius":"200px",
+                "position":"absolute",
+                "left":"75%",
+                "bottom":"0%"
+            }).wrapInner("<div><h3>Submit</h3><div>")
+            
+            $(".well.submit > div").css({
+                "position":"absolute",
+                "top":"0%"
+            })
+            
+            
+        }
+            //////////////////////////////////////////////////////////////
+            // so user can submit data to the script to process
+            //////////////////////////////////////////////////////////////
+            
+            // placement and editing of selection screen
+        {
+            var time_version = "[PLACEHOLDER]";
+                //helper function
+            {
+                function numberParse(dimension){
+                    dimension = parseFloat(dimension.split("p")[0])
+                    return dimension;
+                }
+                //this function takes a dimension and cuts it off and returns the number for use
+
+            }
+                //////////////////////////////////////////////////////////////
+                //this function takes a dimension and cuts it off and returns the number for use
+                //////////////////////////////////////////////////////////////
+        
+            
+            $(".well.selector_display:not(.submit)").appendTo("body").css({
+                "position":"fixed",
+                "width":numberParse($(".well:first").css("width"))*1.5,
+                "height":numberParse($(".well:first").css("height"))*1.5,
+                "top":numberParse($(".well:first").css("top"))/1.25,
+                "left":numberParse($(".well:first").css("left"))/1.25
+                // "display":"none"
+                
+            }).wrapInner("<h2> Select " + time_version + " </h2>")
+            
+            $(".well.selector_display >h2").css({
+                "text-align":"center"
+                
+            })
+            
+            $(".well.selector_display.submit").appendTo($(".well.selector_display:not(.submit)"))
+            
+        }
+            //////////////////////////////////////////////////////////////
+            // selection script for the process
+            // var time_version will be used in the event blocks to give data to display in the title section of the selction ox
+
+            //////////////////////////////////////////////////////////////
     }
     
-    $(".well:not(:first)").appendTo($(".well:first" ))
-    
-    $(".well:not(:first)").css({
-        "width":"5em",
-        "height":"20px",
-        "border-radius":"200px",
-        "position":"absolute",
-        
-    }).wrapInner("<div><h3>Select</h3><div>")
-    
-    $(".well:not(:first) > div").css({
-        "position":"absolute",
-        "top":"0%"
-    })
-    
-    $(".well.day_selector").css({
-        "top":"40%"
-    });
-    
-    $(".well.day_end").css({
-        "left":"50%"
-    });
 
-    $(".well.time_end").css({
-        "left":"50%"
-    });
     
     
         //////////////////////////////////////////////////////////////
         // to adjust inner objects in item menu
         // wrapped all objects in div to move them better
-        // turning rest of wells into select items with adv_clne
+        // turning rest of wells into select items with adv_clone
         //////////////////////////////////////////////////////////////
 }
     //////////////////////////////////////////////////////////////
@@ -352,7 +424,31 @@ $(document).ready(function () {
     // needed to use the map method like this becuase if the times intervals change in the calendar, my script needs to know abut this not got on convetional views of time, as expected the time will be in the last postition also to preserve order for in desktop version, the mousedrag functionality, does not go across but there is an order that it has to cover as well will make an algorithm for this
     // time splitter used to seperate time from day, is setup also dynamic knowing about changes in the caledar
     //////////////////////////////////////////////////////////////
-
+    
+    //event function
+{
+        //pulling up the selection object
+    {
+        $(".well.day_selector").click(function (event){
+            console.log($(".well.time_selector"))
+            
+        })
+        
+        $(".well.time_selector").click(function (event){
+            console.log("hit time")
+        })
+    }
+        //////////////////////////////////////////////////////////////
+        // the code here controls the inital appearning of the selection object
+        // the selection object will contain all possible choices and will replace the text as well
+        // henece the selection object is dynamic
+        //////////////////////////////////////////////////////////////
+}
+    //////////////////////////////////////////////////////////////
+    // events here include the click event for bringing up the selection menu
+    // click event for bringing up the main menu
+    // submit event to make changes
+    //////////////////////////////////////////////////////////////
 });
 
 
