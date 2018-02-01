@@ -153,12 +153,13 @@ addFnCounter($().adv_clone);
 
 
 
-//selection box able to receive necessary info for option time items based on determination of script
+//divs are text width responsive and resize their selves based on the width of the text
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
+//              : dynamic resizing of div based on text widht
 // planned work
-//              :all options appear nicely in selection box
+//              : selction organization for selection box
 //              :algorithm for checkbox selection
 
 $(document).ready(function () {
@@ -440,6 +441,24 @@ $(document).ready(function () {
         //////////////////////////////////////////////////////////////
         // this function gives proper uppercase to any string
         //////////////////////////////////////////////////////////////
+        
+        // helper function
+    {
+        function text_dimension(string_selector)
+        {
+            var canvas = document.createElement("canvas");
+            var ctx = canvas.getContext("2d");
+            ctx.font =  string_selector.css("font-size") + " " + string_selector.css("font-family") ;  // This can be set programmaticly from
+            var textWidth = ctx.measureText(string_selector.text()).width;
+            return textWidth
+        }
+    }
+        //////////////////////////////////////////////////////////////
+        // this function returns the text width and height of given strings
+        //////////////////////////////////////////////////////////////
+        
+        
+        
         //pulling up the selection object
     {
         $(".well.selectors").click(function (event){
@@ -449,10 +468,9 @@ $(document).ready(function () {
             console.log(time_info[time_version])
             time_info[time_version].forEach(function (time_item){
                 $(".selector_display:not(.submit)").append("<div><p>" + time_item + "</p></div>" )
-                
                 if(time_version == "Day"){
                     $(".selector_display:not(.submit) p").css({
-                        "font-size":"4em"
+                        "font-size":"5em"
                     })
                 }
                 
@@ -460,9 +478,15 @@ $(document).ready(function () {
                     $(".selector_display:not(.submit) p").css({
                         "font-size":"1.5em"
                     })
-                    
                 }
+                
+                $(".selector_display:not(.submit) > div:last").css({
+                    "background-color":"blue",
+                    "width": text_dimension($(".selector_display:not(.submit) > div:not(.submit):last > p"))
+                })
             })
+            console.log($(".selector_display:not(.submit) > *"))
+            
             
         })
         
@@ -472,6 +496,8 @@ $(document).ready(function () {
         // the code here controls the inital appearning of the selection object
         // the selection object will contain all possible choices and will replace the text as well
         // henece the selection object is dynamic
+        // use the text_dimension, to properly resize div for selection process,
+        // remove submit button, one selection will be enough
         //////////////////////////////////////////////////////////////
 }
     //////////////////////////////////////////////////////////////
