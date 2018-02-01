@@ -1,3 +1,8 @@
+// helping resources
+// 1 https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
+//     find:You can use the canvas so you don't have to deal so much with css properties:
+
+
 {
 // in this version repeated calls to adv_clones are perfected, and jquery makes the exact number of clones to the page as desired, with the total in all of the window document
     //capabilities:core cloning functionality
@@ -485,10 +490,25 @@ $(document).ready(function () {
                     "width": text_dimension($(".selector_display:not(.submit) > div:not(.submit):last > p"))
                 })
             })
-            console.log($(".selector_display:not(.submit) > *"))
             
+            // pretty print the info
+        {
+            $(".selector_display:not(.submit) > *").pretty_print({
+                objects:$(".selector_display:not(.submit) > div:not(.submit)"),
+                x_spacing:"2em",
+                y_spacing:"2em",
+                leftover:"10em",
+                indent:"4em"
+                });
+            
+        }
+            //////////////////////////////////////////////////////////////
+            // ill make a plugin jquery_pretty_print, first locally to pretty print the data
+            // jquery_pretty_print needs to know what to select
+            //////////////////////////////////////////////////////////////
             
         })
+        $(".well.selectors:first").trigger("click");
         
 
     }
