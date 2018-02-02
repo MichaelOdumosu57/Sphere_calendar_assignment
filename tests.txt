@@ -1,0 +1,36 @@
+tests
+
+1. when selection is inside single select
+
+good
+
+3. when selection is outside single select
+
+good
+
+4. when selection is inside double select
+
+good
+
+5. when selection is outside double select
+
+good
+
+6. when selection is inside multi select
+
+good
+
+7. when selection is outside multi select
+
+good
+
+8. in and out multi
+
+good
+
+9. inverted selection
+
+no on first but it eventually figures it out on successive calls, i have an idea
+2. select first sun12am
+
+bad

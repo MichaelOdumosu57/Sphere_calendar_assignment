@@ -324,7 +324,7 @@ addFnCounter($().pretty_print);
 
 
 
-// figured out how to control the checked attribute
+// script has reverse fill capabilities
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
@@ -705,7 +705,11 @@ $(document).ready(function () {
         
         $("div.checkbox.time ").click(function(event){
             
-            find_child($(this),"INPUT")["0"].checked = false;
+        $.map($("div.checkbox.time "),function(click_info) {
+            find_child($(click_info),"INPUT")["0"].checked = false;
+        });
+            
+            
             $('.menu').fadeIn();
         })
 
@@ -829,6 +833,7 @@ $(document).ready(function () {
         var start;
         var end;
         var hit_it = false;
+        var reverse_hit_it = true;
         $("div.submit:not(.selector_display").click(function (){
             time_editing = $.map($(".selectors"),function (time_query){
                 return find_child(time_query,"H3").text().toLowerCase();
@@ -838,28 +843,40 @@ $(document).ready(function () {
             end= time_editing[1] + time_editing[3];
             console.log(time_editing,start,end)
             
-            // needed to rebind function call from shiftcheckbox
-        {
-            
-        }
-        // ////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////////////////////////
-            $.map($(" div.checkbox.time > input"),function(check){
-                if(start == check.id){
-                    console.log("found start time")
-                    hit_it = true;
-                    
-                }
+
+            $.map($(" div.checkbox.time > input"),function(check,index){
                 
                 check.checked = hit_it;
                 
-
+               
+                if((start == check.id || end == check.id) && hit_it == false){
+                    console.log("found start time")
+                    if(check.id == end){
+                        console.log("reverse fill")
+                        $.map($(" div.checkbox.time > input"),function(uncheck){
+                            uncheck.checked = true;
+                        });
+                        hit_it = false;
+                    }
+                    
+                    else{
+                        hit_it = true;
+                    }
+                    
+                    check.checked = hit_it;
+                    
+                }
                 
-                if(end == check.id){
+                
+                
+                else if(start == check.id || end == check.id){
                     hit_it = false;
                     console.log("found end time")
                 }
+                
+                
             })
+            hit_it = false;
             $(".well.menu").fadeOut();
                     
         })
