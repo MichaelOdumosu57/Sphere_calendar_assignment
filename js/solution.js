@@ -637,9 +637,11 @@ $(document).ready(function () {
         
         
         
-        //pulling up the selection object
+        //selection object events
     {
+        var event_target;
         $(".well.selectors").click(function (event){
+            event_target = event.target;
             time_version =  jsUcfirst($(this)["0"].classList[2].split("_")[0]);
             $(".selector_display").fadeIn(2000)
             $(".selector_display > h2").text("Select " + time_version)
@@ -660,47 +662,92 @@ $(document).ready(function () {
                 
                 // selection box event reaction
             {
-                var target;
-                var children;
-                    // helper recursive function
+                
+            function wait(ms){
+               var start = new Date().getTime();
+               var end = start;
+               while(end < start + ms) {
+                 end = new Date().getTime();
+              }
+            }
+                    // helper advnaced recursive function needs an outside variable to work
                 
                 {
-                    function find_parent(child,suspect,ret){
-                        
-                        if(child["0"].tagName !== suspect ){
-                            find_parent($(target["0"].offsetParent),suspect)
-                            
-                        }
-                        else{
-                            console.log("returning id")
-                            children = child;
+                    var result;
+                    function find_child(parent,suspect,answer = undefined){
+                        var child_array = [];
+                        var found = false;
+                        // console.log(child_array)
+                           if($(parent)["0"].tagName !== suspect){
+                               console.log($(parent))
+                           }
+                           else{
+                               console.log($(parent))
+                               console.log("exit here")
+                               return $(parent)
+                               
+                           }
+                           
+                           if($(parent)["0"].childElementCount == 0){
+                               return result
+                           }
+                        child_array = $.map( $($(parent)["0"].children),function(child) {
+                            wait(300);
+                            console.log("looking at children")
+                            console.log("___________________________________________________________________")
+                            result = find_child(child,suspect,result)
+
                             
                             return child
+                        });
+                        
+                        if(result != undefined){
+                            console.log("tring to shed light")
+                            return result
                         }
+
+                        
+ 
+                        
+
+                        
+                        
                     }
                 }
                     //////////////////////////////////////////////////////////////
-                    // function finds parent of element
-                    // funny how its not retuning anything
+                    // function finds necssary child of element
+                    // var child_array returns all the children to be investigated
                     //////////////////////////////////////////////////////////////
-                    
-                    
-                    
+
+
                     
                 $(".selector_display:not(.submit) > div:last").css({
                     "width": text_dimension($(".selector_display:not(.submit) > div:not(.submit):last > p"))
                 }).click(function (event){
-                    target = $(event.target)
-                     
                     
-                    console.log(find_parent($(target["0"].offsetParent),"DIV"))
-                    console.log(children)
-                
                     
                     $(this).css({
                         "background-color":"yellow"
+                    }).addClass("selection");
+                    
+                    
+                    $.map($(".selector_display:not(.submit) > div:not(.submit)"),function(remove_select){
+                       if($(remove_select).hasClass("selection") == false ) {
+                          $(remove_select).css("background-color","transparent")
+                       }
                     });
+                    
+                    // console.log($(event_target)["0"].children)
+                    console.log(find_child($(event_target),"H3"));
+                    
+                    // $().text($(".selection > p").text());
+                    
+
+                    
+                    $(this).removeClass("selection");
                 })
+                // $(".selector_display:not(.submit) > div:last").delay(500).trigger("click")
+                
             }
                 //////////////////////////////////////////////////////////////
                 // the background of the selected turns yellow and the others turn transparent
@@ -726,8 +773,18 @@ $(document).ready(function () {
             //////////////////////////////////////////////////////////////
             
         })
-        $(".well.selectors:first").trigger("click");
-        
+            $(".well.selectors:first").trigger("click")
+            // re-display menu
+        {
+            $("div.well.selector_display.submit").click(function () {
+                $("div.well.selector_display").fadeOut(2500)
+                
+                
+            })
+        }
+            //////////////////////////////////////////////////////////////
+            //
+            //////////////////////////////////////////////////////////////
 
     }
         //////////////////////////////////////////////////////////////
