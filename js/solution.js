@@ -372,7 +372,7 @@ $(document).ready(function () {
     
     well_clone = $(".well").adv_clone({
         items:"8",
-        specifiers:[["selectors",2,3,4,5],["day_selector",2,3],["day_start",2],["day_end",3],["time_selector",4,5],["time_start",4],["time_end",5],["selector_display",6,8],["submit",7,8]]
+        specifiers:[["menu",1],["selectors",2,3,4,5],["day_selector",2,3],["day_start",2],["day_end",3],["time_selector",4,5],["time_start",4],["time_end",5],["selector_display",6,8],["submit",7,8]]
     });
     
     console.log(well_clone)
@@ -593,12 +593,14 @@ $(document).ready(function () {
         // wrapped all objects in div to move them better
         // turning rest of wells into select items with adv_clone
         //////////////////////////////////////////////////////////////
+        $(".menu").hide();
 }
     //////////////////////////////////////////////////////////////
     // var day holds all the days of the week as can be seen in the x-axis calendar and in order and is lowercase according to the .checkbox attributes
     // needed to use the map method like this becuase if the times intervals change in the calendar, my script needs to know abut this not got on convetional views of time, as expected the time will be in the last postition also to preserve order for in desktop version, the mousedrag functionality, does not go across but there is an order that it has to cover as well will make an algorithm for this
     // time splitter used to seperate time from day, is setup also dynamic knowing about changes in the caledar
     // var time_info is used for the event function, since javascript and jquery cannot return variables from comparison statements, requires looking in the global window element, but that itself is a big object it is better to use and object with string refreences instead
+    // hide the final product it is not supposed to appear on screen
     //////////////////////////////////////////////////////////////
     
     //event function
@@ -629,7 +631,27 @@ $(document).ready(function () {
         // this function returns the text width and height of given strings
         //////////////////////////////////////////////////////////////
         
+        // opening the menu event
+    {
+        var one_time = 0;
+        $.map($("div.checkbox.time "),function(click_info) {
+            $(click_info).attr("onclick","$('.menu').fadeIn()")
+            console.log($(click_info)["0"].onclick )
+            
+        });
         
+
+            // event.preventDefault();
+            // $(".menu").fadeIn()
+            // $(this).css({
+            //     "color":"rgb(0,0,0)"
+            // })
+            
+            // console.log($(this).css("color"))
+
+        // })
+        
+    }
         
         //selection object events
     {
@@ -813,13 +835,21 @@ $(document).ready(function () {
             start = time_editing[0] + time_editing[2];
             end= time_editing[1] + time_editing[3];
             console.log(time_editing,start,end)
-
+            
+            // needed to rebind function call from shiftcheckbox
+        {
+            
+        }
+        // ////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////
             $.map($(" div.checkbox.time > input"),function(check){
                 if(start == check.id){
                     console.log("found start time")
                     hit_it = true;
                     
                 }
+                
+                console.log(check.checked)
                 
                 if(hit_it == true){
                     
@@ -831,7 +861,7 @@ $(document).ready(function () {
                     console.log("found end time")
                 }
             })
-            $(".well").fadeOut();
+            $(".well.menu").fadeOut();
                     
         })
         
