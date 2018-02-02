@@ -324,12 +324,13 @@ addFnCounter($().pretty_print);
 
 
 
-// selection event can select the start and end positions, also it can properly remove the menu object
+// main objective completed
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
 //              : dynamic resizing of div based on text widht
 //              : dynamic selection and option refill
+//              : selects all input items based on time_queries
 // planned work
 //              :algorithm for checkbox selection
 
@@ -798,11 +799,12 @@ $(document).ready(function () {
         
         
         
-        // submission events
+        // submission event
     {
         var time_editing;
         var start;
         var end;
+        var hit_it = false;
         $("div.submit:not(.selector_display").click(function (){
             time_editing = $.map($(".selectors"),function (time_query){
                 return find_child(time_query,"H3").text().toLowerCase();
@@ -811,9 +813,24 @@ $(document).ready(function () {
             start = time_editing[0] + time_editing[2];
             end= time_editing[1] + time_editing[3];
             console.log(time_editing,start,end)
-            $("#" + start).trigger("click")
-            $("#" + end).trigger("click")
-            console.log($(" div.checkbox.time > input"))
+
+            $.map($(" div.checkbox.time > input"),function(check){
+                if(start == check.id){
+                    console.log("found start time")
+                    hit_it = true;
+                    
+                }
+                
+                if(hit_it == true){
+                    
+                    $(check).trigger("click")
+                }
+                
+                if(end == check.id){
+                    hit_it = false;
+                    console.log("found end time")
+                }
+            })
             $(".well").fadeOut();
                     
         })
