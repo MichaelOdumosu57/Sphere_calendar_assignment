@@ -324,7 +324,7 @@ addFnCounter($().pretty_print);
 
 
 
-// main objective completed
+// figured out how to control the checked attribute
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
@@ -630,26 +630,86 @@ $(document).ready(function () {
         //////////////////////////////////////////////////////////////
         // this function returns the text width and height of given strings
         //////////////////////////////////////////////////////////////
+
+
+
+        // helper function
+    {
+        function wait(ms){
+           var start = new Date().getTime();
+           var end = start;
+           while(end < start + ms) {
+             end = new Date().getTime();
+          }
+        }
+    }
+        //////////////////////////////////////////////////////////////
+        // the next function can hit an infinite loop, which is not good for my computer, i use functions like these
+        //////////////////////////////////////////////////////////////
+        
+        
+        
+        // helper advnaced recursive function needs an outside variable to work
+    
+    {
+        var result;
+        function find_child(parent,suspect,answer = undefined){
+            
+            
+            
+               if($(parent)["0"].tagName !== suspect){
+                //   console.log($(parent))
+               }
+               else{
+                //   console.log($(parent))
+                //   console.log("exit here")
+                   return $(parent)
+                   
+               }
+               
+               if($(parent)["0"].childElementCount == 0){
+                   return result
+               }
+            $.map( $($(parent)["0"].children),function(child) {
+                
+                // console.log("looking at children")
+                // console.log("___________________________________________________________________")
+                result = find_child(child,suspect,result)
+
+            });
+            
+            if(result != undefined){
+                // console.log("tring to shed light")
+                return result
+            }
+
+            
+
+            
+
+            
+            
+        }
+    }
+        //////////////////////////////////////////////////////////////
+        // function finds necssary child of element
+        // var result is what makes this function special,
+        // to understand this is a new type of function, where the function cannot return the answer rather it needs an external variable to store data to help if you will "unbury" the desired return data
+        //////////////////////////////////////////////////////////////
+        
         
         // opening the menu event
     {
         var one_time = 0;
-        $.map($("div.checkbox.time "),function(click_info) {
-            $(click_info).attr("onclick","$('.menu').fadeIn()")
-            console.log($(click_info)["0"].onclick )
-            
-        });
+
         
-
-            // event.preventDefault();
-            // $(".menu").fadeIn()
-            // $(this).css({
-            //     "color":"rgb(0,0,0)"
-            // })
+        $("div.checkbox.time ").click(function(event){
             
-            // console.log($(this).css("color"))
+            find_child($(this),"INPUT")["0"].checked = false;
+            $('.menu').fadeIn();
+        })
 
-        // })
+
         
     }
         
@@ -657,67 +717,9 @@ $(document).ready(function () {
     {
         var event_target;
         
-            // helper function
-        {
-            function wait(ms){
-               var start = new Date().getTime();
-               var end = start;
-               while(end < start + ms) {
-                 end = new Date().getTime();
-              }
-            }
-        }
-            //////////////////////////////////////////////////////////////
-            // the next function can hit an infinite loop, which is not good for my computer, i use functions like these
-            //////////////////////////////////////////////////////////////
+
             
-            // helper advnaced recursive function needs an outside variable to work
-        
-        {
-            var result;
-            function find_child(parent,suspect,answer = undefined){
-                
-                
-                
-                   if($(parent)["0"].tagName !== suspect){
-                       console.log($(parent))
-                   }
-                   else{
-                       console.log($(parent))
-                       console.log("exit here")
-                       return $(parent)
-                       
-                   }
-                   
-                   if($(parent)["0"].childElementCount == 0){
-                       return result
-                   }
-                $.map( $($(parent)["0"].children),function(child) {
-                    
-                    console.log("looking at children")
-                    console.log("___________________________________________________________________")
-                    result = find_child(child,suspect,result)
 
-                });
-                
-                if(result != undefined){
-                    console.log("tring to shed light")
-                    return result
-                }
-
-                
-
-                
-
-                
-                
-            }
-        }
-            //////////////////////////////////////////////////////////////
-            // function finds necssary child of element
-            // var result is what makes this function special,
-            // to understand this is a new type of function, where the function cannot return the answer rather it needs an external variable to store data to help if you will "unbury" the desired return data
-            //////////////////////////////////////////////////////////////
                             
         $(".well.selectors").click(function (event){
             event_target = event.target;
@@ -849,12 +851,9 @@ $(document).ready(function () {
                     
                 }
                 
-                console.log(check.checked)
+                check.checked = hit_it;
                 
-                if(hit_it == true){
-                    
-                    $(check).trigger("click")
-                }
+
                 
                 if(end == check.id){
                     hit_it = false;
