@@ -324,14 +324,13 @@ addFnCounter($().pretty_print);
 
 
 
-// selection event updates time version in appropriate spot and clearns the selection box for new time options
+// selection event can select the start and end positions, also it can properly remove the menu object
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
 //              : dynamic resizing of div based on text widht
 //              : dynamic selection and option refill
 // planned work
-//              : selction organization for selection box
 //              :algorithm for checkbox selection
 
 $(document).ready(function () {
@@ -634,6 +633,69 @@ $(document).ready(function () {
         //selection object events
     {
         var event_target;
+        
+            // helper function
+        {
+            function wait(ms){
+               var start = new Date().getTime();
+               var end = start;
+               while(end < start + ms) {
+                 end = new Date().getTime();
+              }
+            }
+        }
+            //////////////////////////////////////////////////////////////
+            // the next function can hit an infinite loop, which is not good for my computer, i use functions like these
+            //////////////////////////////////////////////////////////////
+            
+            // helper advnaced recursive function needs an outside variable to work
+        
+        {
+            var result;
+            function find_child(parent,suspect,answer = undefined){
+                
+                
+                
+                   if($(parent)["0"].tagName !== suspect){
+                       console.log($(parent))
+                   }
+                   else{
+                       console.log($(parent))
+                       console.log("exit here")
+                       return $(parent)
+                       
+                   }
+                   
+                   if($(parent)["0"].childElementCount == 0){
+                       return result
+                   }
+                $.map( $($(parent)["0"].children),function(child) {
+                    
+                    console.log("looking at children")
+                    console.log("___________________________________________________________________")
+                    result = find_child(child,suspect,result)
+
+                });
+                
+                if(result != undefined){
+                    console.log("tring to shed light")
+                    return result
+                }
+
+                
+
+                
+
+                
+                
+            }
+        }
+            //////////////////////////////////////////////////////////////
+            // function finds necssary child of element
+            // var result is what makes this function special,
+            // to understand this is a new type of function, where the function cannot return the answer rather it needs an external variable to store data to help if you will "unbury" the desired return data
+            //////////////////////////////////////////////////////////////
+                            
         $(".well.selectors").click(function (event){
             event_target = event.target;
             time_version =  jsUcfirst($(this)["0"].classList[2].split("_")[0]);
@@ -656,75 +718,7 @@ $(document).ready(function () {
                 
                 // selection box event reaction
             {
-                    // helper function
-                {
-                    function wait(ms){
-                       var start = new Date().getTime();
-                       var end = start;
-                       while(end < start + ms) {
-                         end = new Date().getTime();
-                      }
-                    }
-                }
-                    //////////////////////////////////////////////////////////////
-                    // the next function can hit an infinite loop, which is not good for my computer, i use functions like these
-                    //////////////////////////////////////////////////////////////
-                    
-                    
-                    
-                    
-                    
-                    // helper advnaced recursive function needs an outside variable to work
-                
-                {
-                    var result;
-                    function find_child(parent,suspect,answer = undefined){
-                        
-                        
-                        
-                           if($(parent)["0"].tagName !== suspect){
-                               console.log($(parent))
-                           }
-                           else{
-                               console.log($(parent))
-                               console.log("exit here")
-                               return $(parent)
-                               
-                           }
-                           
-                           if($(parent)["0"].childElementCount == 0){
-                               return result
-                           }
-                        $.map( $($(parent)["0"].children),function(child) {
-                            
-                            console.log("looking at children")
-                            console.log("___________________________________________________________________")
-                            result = find_child(child,suspect,result)
 
-                        });
-                        
-                        if(result != undefined){
-                            console.log("tring to shed light")
-                            return result
-                        }
-
-                        
- 
-                        
-
-                        
-                        
-                    }
-                }
-                    //////////////////////////////////////////////////////////////
-                    // function finds necssary child of element
-                    // var child_array returns all the children to be investigated
-                    // var result is what makes this function special,
-                    // to understand this is a new type of function, where the function cannot return the answer rather it needs an external variable to store data to help if you will "unbury" the desired return data
-                    //////////////////////////////////////////////////////////////
-
-
-                    
                 $(".selector_display:not(.submit) > div:last").css({
                     "width": text_dimension($(".selector_display:not(.submit) > div:not(.submit):last > p"))
                 }).click(function (event){
@@ -778,7 +772,7 @@ $(document).ready(function () {
             //////////////////////////////////////////////////////////////
             
         })
-            $(".well.selectors:first").trigger("click")
+            // $(".well.selectors:first").trigger("click")
             // re-display menu
         {
             $("div.well.selector_display.submit").click(function () {
@@ -789,7 +783,7 @@ $(document).ready(function () {
             })
         }
             //////////////////////////////////////////////////////////////
-            //
+            // fadesout the selection box and remove the choices to make room for new ones
             //////////////////////////////////////////////////////////////
 
     }
@@ -798,8 +792,42 @@ $(document).ready(function () {
         // the selection object will contain all possible choices and will replace the text as well
         // henece the selection object is dynamic
         // use the text_dimension, to properly resize div for selection process,
-        // remove submit button, one selection will be enough
+        // var event_target explained in helper advanced recursive function
         //////////////////////////////////////////////////////////////
+        
+        
+        
+        
+        // submission events
+    {
+        var time_editing;
+        var start;
+        var end;
+        $("div.submit:not(.selector_display").click(function (){
+            time_editing = $.map($(".selectors"),function (time_query){
+                return find_child(time_query,"H3").text().toLowerCase();
+            })
+            
+            start = time_editing[0] + time_editing[2];
+            end= time_editing[1] + time_editing[3];
+            console.log(time_editing,start,end)
+            $("#" + start).trigger("click")
+            $("#" + end).trigger("click")
+            console.log($(" div.checkbox.time > input"))
+            $(".well").fadeOut();
+                    
+        })
+        
+
+    }
+        //////////////////////////////////////////////////////////////
+        // the code here acts as an app interface manipulating the calendar checkbox properties to fulfill the options chosen from the menu user interface
+        // this is the point where i will need to create an algorithm and look how the native scripts selected multiple checkboxes
+        //  holds information for algorithm to chooose all the checkboxes
+        // var start and var end are for the algortim to find what to choose
+        //  var time_editing retrives the final info from the selectors
+        //////////////////////////////////////////////////////////////
+    
 }
     //////////////////////////////////////////////////////////////
     // events here include the click event for bringing up the selection menu
