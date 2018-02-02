@@ -324,15 +324,17 @@ addFnCounter($().pretty_print);
 
 
 
-// script has reverse fill capabilities
+// script is perfect in desired conceptuality
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
 //              : dynamic resizing of div based on text widht
 //              : dynamic selection and option refill
 //              : selects all input items based on time_queries
-// planned work
 //              :algorithm for checkbox selection
+//              :inverted filling
+// planned work
+//              :media-querying
 
 $(document).ready(function () {
 
@@ -850,20 +852,29 @@ $(document).ready(function () {
                 
                
                 if((start == check.id || end == check.id) && hit_it == false){
-                    console.log("found start time")
-                    if(check.id == end){
+                    console.log("found beginning time")
+                    if(start == "selectselect" || end == "selectselect" || start == end ){
+                        console.log("one selection")
+                        check.checked = true;
+                        
+                        
+                    }
+
+                    else if(check.id == end ){
                         console.log("reverse fill")
                         $.map($(" div.checkbox.time > input"),function(uncheck){
                             uncheck.checked = true;
                         });
                         hit_it = false;
+                        check.checked = hit_it;
                     }
                     
                     else{
                         hit_it = true;
+                        check.checked = hit_it;
                     }
                     
-                    check.checked = hit_it;
+                    
                     
                 }
                 
@@ -871,11 +882,14 @@ $(document).ready(function () {
                 
                 else if(start == check.id || end == check.id){
                     hit_it = false;
-                    console.log("found end time")
+                    console.log("found finishing time")
                 }
                 
                 
             })
+            if( end == "sun12am"){
+                $("#sun12am")["0"].checked = true;
+            }
             hit_it = false;
             $(".well.menu").fadeOut();
                     

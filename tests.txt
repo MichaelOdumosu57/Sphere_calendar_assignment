@@ -4,6 +4,22 @@ tests
 
 good
 
+2. select first sun12am only
+
+bad
+
+    2a select only
+    good
+
+    2b select as end
+    good
+
+    2c select only as end
+    good
+
+    2d when both are equal
+    good
+
 3. when selection is outside single select
 
 good
@@ -31,6 +47,3 @@ good
 9. inverted selection
 
 no on first but it eventually figures it out on successive calls, i have an idea
-2. select first sun12am
-
-bad
