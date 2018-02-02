@@ -322,20 +322,14 @@ addFnCounter($().pretty_print);
 
 
 
-//divs are text width responsive and resize their selves based on the width of the text
-// capabilities :script creation and position of menu object
-//              :script dynamically aware of the order of the days and the times on the calendar
-//              : inner menu item positinon and creation
-//              : dynamic resizing of div based on text widht
-// planned work
-//              : selction organization for selection box
-//              :algorithm for checkbox selection
 
-//divs are text width responsive and resize their selves based on the width of the text
+
+// selection event updates time version in appropriate spot and clearns the selection box for new time options
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
 //              : dynamic resizing of div based on text widht
+//              : dynamic selection and option refill
 // planned work
 //              : selction organization for selection box
 //              :algorithm for checkbox selection
@@ -662,22 +656,32 @@ $(document).ready(function () {
                 
                 // selection box event reaction
             {
-                
-            function wait(ms){
-               var start = new Date().getTime();
-               var end = start;
-               while(end < start + ms) {
-                 end = new Date().getTime();
-              }
-            }
+                    // helper function
+                {
+                    function wait(ms){
+                       var start = new Date().getTime();
+                       var end = start;
+                       while(end < start + ms) {
+                         end = new Date().getTime();
+                      }
+                    }
+                }
+                    //////////////////////////////////////////////////////////////
+                    // the next function can hit an infinite loop, which is not good for my computer, i use functions like these
+                    //////////////////////////////////////////////////////////////
+                    
+                    
+                    
+                    
+                    
                     // helper advnaced recursive function needs an outside variable to work
                 
                 {
                     var result;
                     function find_child(parent,suspect,answer = undefined){
-                        var child_array = [];
-                        var found = false;
-                        // console.log(child_array)
+                        
+                        
+                        
                            if($(parent)["0"].tagName !== suspect){
                                console.log($(parent))
                            }
@@ -691,14 +695,12 @@ $(document).ready(function () {
                            if($(parent)["0"].childElementCount == 0){
                                return result
                            }
-                        child_array = $.map( $($(parent)["0"].children),function(child) {
-                            wait(300);
+                        $.map( $($(parent)["0"].children),function(child) {
+                            
                             console.log("looking at children")
                             console.log("___________________________________________________________________")
                             result = find_child(child,suspect,result)
 
-                            
-                            return child
                         });
                         
                         if(result != undefined){
@@ -717,6 +719,8 @@ $(document).ready(function () {
                     //////////////////////////////////////////////////////////////
                     // function finds necssary child of element
                     // var child_array returns all the children to be investigated
+                    // var result is what makes this function special,
+                    // to understand this is a new type of function, where the function cannot return the answer rather it needs an external variable to store data to help if you will "unbury" the desired return data
                     //////////////////////////////////////////////////////////////
 
 
@@ -738,15 +742,16 @@ $(document).ready(function () {
                     });
                     
                     // console.log($(event_target)["0"].children)
-                    console.log(find_child($(event_target),"H3"));
                     
-                    // $().text($(".selection > p").text());
+                    
+                    console.log($(find_child($(event_target),"H3")).text(jsUcfirst($(".selection > p").text())))
+                    // $(".selection > p").text()
                     
 
                     
                     $(this).removeClass("selection");
                 })
-                // $(".selector_display:not(.submit) > div:last").delay(500).trigger("click")
+                
                 
             }
                 //////////////////////////////////////////////////////////////
@@ -777,7 +782,8 @@ $(document).ready(function () {
             // re-display menu
         {
             $("div.well.selector_display.submit").click(function () {
-                $("div.well.selector_display").fadeOut(2500)
+                $("div.well.selector_display").fadeOut(2500);
+                $("div.well.selector_display:not(.submit) > div:not(.submit)").remove();
                 
                 
             })
