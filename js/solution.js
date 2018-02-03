@@ -324,7 +324,7 @@ addFnCounter($().pretty_print);
 
 
 
-// script is perfect in desired conceptuality
+//made menu as responsive as i could, realize that I do not need to mess with the device properties to achieve the desired visual effect
 // capabilities :script creation and position of menu object
 //              :script dynamically aware of the order of the days and the times on the calendar
 //              : inner menu item positinon and creation
@@ -384,8 +384,14 @@ $(document).ready(function () {
         "background-color":"rgba(255, 255, 0,1)"
     })
     
-    
-
+        // relative sizing
+    {
+        
+    }
+        //////////////////////////////////////////////////////////////
+        // my menu object does not display well if the device dimensional pixel ration is slighly disturbed
+        // ill implement a ratio function to resolve this
+        //////////////////////////////////////////////////////////////
 }
     //////////////////////////////////////////////////////////////
     //on clicking in touch device a customized well displays
@@ -426,8 +432,8 @@ $(document).ready(function () {
     }
     
     $(".well:first").css({
-        "height": browser_window.outerHeight/4,
-        "width": browser_window.outerWidth/1.9,
+        "height": 1366/4,
+        "width": 1024/1.9,
         "top": "30%",
         "left": "20%"
         
@@ -449,6 +455,20 @@ $(document).ready(function () {
 
     //editing  menu object
 {
+
+        //helper function
+    {
+        function numberParse(dimension){
+            dimension = parseFloat(dimension.split("p")[0])
+            return dimension;
+        }
+        //this function takes a dimension and cuts it off and returns the number for use
+
+    }
+        //////////////////////////////////////////////////////////////
+        //this function takes a dimension and cuts it off and returns the number for use
+        //////////////////////////////////////////////////////////////
+            
     var day = $.map($(".day > .x-axis"), function(value, index) {
                 return $(value).text().toLowerCase();
             });
@@ -501,13 +521,14 @@ $(document).ready(function () {
                 
             }).wrapInner("<div><h3>Select</h3><div>")
             
+            
             $(".well:not(:first) > div").css({
                 "position":"absolute",
                 "top":"0%"
             })
             
             $(".well.day_selector").css({
-                "top":"40%"
+                "top":numberParse($(".well:first").css("height"))*.5
             });
             
             $(".well.day_end").css({
@@ -548,29 +569,29 @@ $(document).ready(function () {
             // placement and editing of selection screen
         {
             var time_version = "[PLACEHOLDER]";
-                //helper function
-            {
-                function numberParse(dimension){
-                    dimension = parseFloat(dimension.split("p")[0])
-                    return dimension;
-                }
-                //this function takes a dimension and cuts it off and returns the number for use
 
-            }
-                //////////////////////////////////////////////////////////////
-                //this function takes a dimension and cuts it off and returns the number for use
-                //////////////////////////////////////////////////////////////
-        
             
             $(".well.selector_display:not(.submit)").appendTo("body").css({
                 "position":"fixed",
-                "width":numberParse($(".well:first").css("width"))*1.5,
+                "width":numberParse($(".well:first").css("width"))*1.2,
                 "height":numberParse($(".well:first").css("height"))*1.5,
                 "top":numberParse($(".well:first").css("top"))/1.25,
-                "left":numberParse($(".well:first").css("left"))/1.25
-                // "display":"none"
+                "left":numberParse($(".well:first").css("left"))/1.3
+                
                 
             }).wrapInner("<h2> </h2>").hide();
+            
+            
+            // $(".well.selector_display:not(.submit)").appendTo("body").css({
+            //     "position":"fixed",
+            //     "width":"778px",
+            //     "height":"511px",
+            //     "top":"327.838px",
+            //     "left":"123.838px"
+                
+                
+            // }).wrapInner("<h2> </h2>").hide();
+            
             
             $(".well.selector_display >h2").css({
                 "text-align":"center"
@@ -730,20 +751,21 @@ $(document).ready(function () {
         $(".well.selectors").click(function (event){
             event_target = event.target;
             time_version =  jsUcfirst($(this)["0"].classList[2].split("_")[0]);
-            $(".selector_display").fadeIn(2000)
+            $(".selector_display").fadeIn(500);
+            $(".menu").fadeOut(500);
             $(".selector_display > h2").text("Select " + time_version)
             console.log(time_info[time_version])
             time_info[time_version].forEach(function (time_item){
                 $(".selector_display:not(.submit)").append("<div><p>" + time_item + "</p></div>" )
                 if(time_version == "Day"){
                     $(".selector_display:not(.submit) p").css({
-                        "font-size":"5em"
+                        "font-size":numberParse($(".selector_display").css("width"))/8
                     })
                 }
                 
                 else{
                     $(".selector_display:not(.submit) p").css({
-                        "font-size":"1.5em"
+                        "font-size":numberParse($(".selector_display").css("width"))/37
                     })
                 }
                 
@@ -807,7 +829,8 @@ $(document).ready(function () {
             // re-display menu
         {
             $("div.well.selector_display.submit").click(function () {
-                $("div.well.selector_display").fadeOut(2500);
+                $("div.well.selector_display").fadeOut(500);
+                $(".menu").fadeIn(500);
                 $("div.well.selector_display:not(.submit) > div:not(.submit)").remove();
                 
                 
