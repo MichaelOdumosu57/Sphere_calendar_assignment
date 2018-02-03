@@ -337,6 +337,16 @@ addFnCounter($().pretty_print);
 //              :media-querying
 
 $(document).ready(function () {
+    
+    //if is not touch do not even run
+{
+    if(!("ontouchstart" in document.documentElement)){
+        return;
+    }
+}
+    //////////////////////////////////////////////////////////////
+    // final piece of project, if the device is not touchscreen it my solution script should not run
+    //////////////////////////////////////////////////////////////
 
     
     //understanding needed info from the creators work
